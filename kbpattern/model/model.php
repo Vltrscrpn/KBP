@@ -63,10 +63,83 @@ function set_contact_info($post)
             		mysql_real_escape_string($post['id'])
             		);
    $result = mysql_query($updatequery, $link);
-   if (!result){ return FALSE; }else{ return TRUE;}
+   if (!$result){ return FALSE; }else{ return TRUE;}
    
    close_db($link);
 }
+
+
+
+// Update Customer Information
+function set_update_customer($post)
+{
+   $link = open_db();
+   // Insert quote into the general table
+   $updatequery = sprintf("UPDATE customers 
+   			SET shopNumber		= '%s',
+				name			= '%s',
+				billingContact	= '%s',
+				billingEmail	= '%s',
+				address1		= '%s',
+				address2		= '%s',
+				city			= '%s',
+				state			= '%s',
+				zip				= '%s'
+			WHERE id='%s'",
+            		mysql_real_escape_string($post['foundryAbbr']),
+            		mysql_real_escape_string($post['foundryName']),
+            		mysql_real_escape_string($post['billingContact']),
+            		mysql_real_escape_string($post['billingEmail']),
+            		mysql_real_escape_string($post['address1']),
+            		mysql_real_escape_string($post['address2']),
+            		mysql_real_escape_string($post['city']),
+            		mysql_real_escape_string($post['state']),
+            		mysql_real_escape_string($post['zip']),
+            		mysql_real_escape_string($post['id'])
+            		);
+   $result = mysql_query($updatequery, $link);
+   if (!$result){ return FALSE; }else{ return TRUE;}
+   
+   close_db($link);
+}
+
+
+// Update Customer Information
+function set_new_customer($post)
+{
+   $link = open_db();
+   // Insert quote into the general table
+   $query = sprintf("INSERT INTO customers 
+   			(shopNumber, name, billingContact, billingEmail, address1,
+			 address2, city, state, zip)
+			VALUES ('%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+            		mysql_real_escape_string($post['foundryAbbr']),
+            		mysql_real_escape_string($post['foundryName']),
+            		mysql_real_escape_string($post['billingContact']),
+            		mysql_real_escape_string($post['billingEmail']),
+            		mysql_real_escape_string($post['address1']),
+            		mysql_real_escape_string($post['address2']),
+            		mysql_real_escape_string($post['city']),
+            		mysql_real_escape_string($post['state']),
+            		mysql_real_escape_string($post['zip'])
+            		);
+   $result = mysql_query($query, $link);
+  
+   if (!$result){ return FALSE; }else{ 
+      $customerid = mysql_insert_id(); //return id for newly created customer
+	  $query = sprintf("INSERT INTO contacts 
+						(customer_id, name, email) VALUES ('%s','%s','%s')",
+						$customerid,						
+						mysql_real_escape_string($post['contact']),
+						mysql_real_escape_string($post['contactEmail'])
+						);
+	  $result = mysql_query($query, $link);
+	  if (!$result){ return FALSE; }else{ return TRUE; }
+   }
+   close_db($link);
+}
+
+
 
 
 function set_add_contact($post)
@@ -81,7 +154,7 @@ function set_add_contact($post)
             		mysql_real_escape_string($post['customerid'])
             		);
    $result = mysql_query($query, $link);
-   if (!result){ return FALSE; }else{ return TRUE;}
+   if (!$result){ return FALSE; }else{ return TRUE;}
    
    close_db($link);
 }
@@ -95,7 +168,7 @@ function remove_contact_id($id)
             		mysql_real_escape_string($id)
             		);
    $result = mysql_query($query, $link);
-   if (!result){ return FALSE; }else{ return TRUE;}
+   if (!$result){ return FALSE; }else{ return TRUE;}
    
    close_db($link);
 }
@@ -298,6 +371,7 @@ function get_contact_info_id($id)
    
    return $contacts;
 }
+
 //returns contact name
 function get_contact_by_id($id)
 {
@@ -322,6 +396,7 @@ function get_quote_for_copy($id)
   //var_dump($copy);
   return $copy;
 }
+
 //returns quoted instructions
 function get_quote_instructions_by_id($id)
 {

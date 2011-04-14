@@ -62,11 +62,13 @@ $states = Array('AL' => 'Alabama',
         <a href="customers.php?action=instructions&id=<?php echo $customer[0]['id']?>" class="invoices">Instructions</a>
         <br />
     </h3>
+    <form id="form" name="form" method="post" action="customers.php">
     <p class="youhave">
     <table>
     	<tr>
     	 <td>Foundry Name</td>
-    	 <td><input type="text" name="foundryName" class="required" value="<?php echo $customer[0]['name']?>"/></td>
+    	 <td><input type="text" name="foundryName" class="required" value="<?php echo $customer[0]['name']?>"/>
+		 <input type="hidden" name="id" class="required" value="<?php echo $customer[0]['id']?>"/></td>
     	 <td>Foundry Abbr.</td>
     	 <td><input type="text" name="foundryAbbr" class="required" value="<?php echo $customer[0]['shopNumber']?>"/></td>
     	</tr>
@@ -111,7 +113,7 @@ $states = Array('AL' => 'Alabama',
 		<tr> 
 		    <th>Contact Name</th> 
 		    <th>Email Address</th> 
-		    <th>Options</th> 
+		    <!--<th>Options</th> -->
 		</tr> 
 		</thead> 
 		<tbody> 
@@ -119,7 +121,7 @@ $states = Array('AL' => 'Alabama',
 		<tr> 
 		    <td><a href="customers.php?action=newcontact&id=<?php echo $contact['id']?>&custid=<?php echo $customer[0]['id']?>" title="Edit Contact"><?php echo $contact['name']?></a></td> 
 		    <td><?php echo $contact['email']?></td>
-		    <td><a href="customers.php?action=removecontact&id=<?php echo $contact['id']?>">Delete Contact</a></td> 
+		    <!--<td><a href="customers.php?action=removecontact&id=">Delete Contact</a></td> -->
 		</tr> 
 	    	<?php endforeach; ?>
 		</tbody> 
@@ -129,7 +131,7 @@ $states = Array('AL' => 'Alabama',
     <div class="spacer"></div>
     	
    <div class="spacer"></div>
-   <input type="submit" name="submit" value="Save Customer"/>
+   <input type="submit" name="updatecustomer" value="Save Customer"/>
    </form>
    </div>
 <?php $content = ob_get_clean() ?>

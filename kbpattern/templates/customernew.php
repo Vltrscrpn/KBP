@@ -56,7 +56,7 @@ $states = Array('AL' => 'Alabama',
 <?php ob_start() ?>
 <body onload="document.form.customer.focus()">
     <div id="stylized" class="myform">
-    <form id="form" name="form" method="post" action="newcustomer.php">
+    <form id="form" name="form" method="post" action="customers.php">
     <h1>New Customer</h1>    	
     <table>
     	<tr>
@@ -103,7 +103,7 @@ $states = Array('AL' => 'Alabama',
     <div class="spacer"></div>
     	
    <div class="spacer"></div>
-   <input type="submit" name="submit" value="Save Customer"/>
+   <input type="submit" name="newcustomer" value="Save Customer"/>
    </form>
    </div>
 <?php $content = ob_get_clean() ?>
