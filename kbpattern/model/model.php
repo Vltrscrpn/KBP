@@ -5,6 +5,7 @@ require_once 'config.php';
 
 function open_db()
 {
+   global $configDbServer, $configDbUser, $configDbPass, $configDb;
    $link = mysql_connect($configDbServer, $configDbUser, $configDbPass);
    mysql_select_db($configDb);
    
