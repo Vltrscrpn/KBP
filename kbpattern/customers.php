@@ -43,7 +43,15 @@ elseif (($_GET['action'] === 'newcontact') && isset($_GET['id'])){
 }
 elseif (($_GET['action'] === 'newcontact') && isset($_GET['custid'])){
    $customerid = $_GET['custid'];
+   $customer = get_customer_name($_GET['custid']);
    require 'templates/contactadd.php';
+}
+elseif (($_GET['action'] === 'instructions') && isset($_GET['id'])){
+   $customerid = $_GET['id'];
+   $name	 = get_customer_name($_GET['id']);
+   $instructions = get_customer_instructions($_GET['id']);
+   //var_dump($instructions);exit;
+   require 'templates/customerinstructions.php';
 }
 elseif ($_GET['action'] === 'list'){
    $customers = get_all_customers();

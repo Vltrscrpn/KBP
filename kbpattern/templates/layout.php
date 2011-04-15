@@ -9,8 +9,7 @@ $panel_invoices = '<ul><li><a href="invoices.php?action=list" class="chart_line"
 $panel_timecards= '<ul><li><a href="timecards.php?action=list" class="clock_edit">List timecards</a></li>
                    <li><a href="timecards.php?action=new" class="clock_add">New timecard</a></li></ul>';
 $panel_customers ='<ul><li><a href="customers.php?action=list" class="group_go">List customers</a></li>
-                   <li><a href="customers.php?action=new" class="groupadd">New customer</a></li>
-                   <li><a href="customers.php?action=newcontact" class="useradd">New contact</a></li></ul>';
+                   <li><a href="customers.php?action=new" class="groupadd">New customer</a></li></ul>';
 $panel_settings = '<ul>
 		   <li><a href="settings.php?action=employees" class="useradd">Employees</a></li>
                    <li><a href="settings.php?action=company" class="building_edit">Company setup</a></ul>';

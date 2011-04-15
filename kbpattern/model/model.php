@@ -139,9 +139,6 @@ function set_new_customer($post)
    close_db($link);
 }
 
-
-
-
 function set_add_contact($post)
 {
    $link = open_db();
@@ -283,6 +280,25 @@ function get_all_quotes()
 }
 
 
+function get_customer_instructions($id)
+{
+   $link = open_db();
+   
+   $query = sprintf("SELECT * FROM instructions
+   			  WHERE cust_id='%s'",
+			  mysql_real_escape_string($id));
+   $result = mysql_query($query, $link);
+   $instructions = array();
+   while ($row = mysql_fetch_assoc($result))
+   {
+   	$instructions[] = $row;
+   }
+   
+   close_db($link);
+   
+   return $instructions;
+}
+
 function get_all_customers()
 {
    $link = open_db();
@@ -324,6 +340,21 @@ function get_customer_by_id($id)
    
    $id = mysql_real_escape_string($id);
    $query = 'SELECT c.name FROM quotes AS q LEFT JOIN customers AS c ON q.customer_id=c.id WHERE q.id = '.$id;
+   $result = mysql_query($query);
+   $row = mysql_fetch_row($result);
+   
+   close_db($link);
+   
+   return $row[0];
+}
+
+//returns customer name from customer number
+function get_customer_name($id)
+{
+   $link = open_db();
+   
+   $id = mysql_real_escape_string($id);
+   $query = 'SELECT name FROM customers WHERE id = '.$id;
    $result = mysql_query($query);
    $row = mysql_fetch_row($result);
    

@@ -6,7 +6,7 @@
 <?php ob_start() ?>
 <div id="rightnow">
     <h3 class="reallynow">
-        <span>Add A Contact</span><br />
+        <span>Add A Contact - <?php echo $customer?></span><br />
     </h3>
     <p class="youhave">
     <form method=POST action="customers.php" id="form">
