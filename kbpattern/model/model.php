@@ -1,11 +1,11 @@
 <?php
 // model/model.php
 // Logic goes here.  Business logic that is.
-require_once 'config.php';
+//require_once 'config.php';
 
 function open_db()
 {
-   global $configDbServer, $configDbUser, $configDbPass, $configDb;
+
    $link = mysql_connect($configDbServer, $configDbUser, $configDbPass);
    mysql_select_db($configDb);
    
@@ -49,6 +49,25 @@ if ($action === 'newquote') {
 	 	  <strong>Congrats!</strong> New quote successfully created!</p>';
 	 return $html;
 	}
+}
+
+function set_company_data($post)
+{
+   $link = open_db();
+   $updatequery = sprintf("UPDATE company 
+   			SET address='%s',citystzip='%s',phone='%s',fax='%s',shoprate='%s',margin='%s'
+			WHERE id=1",
+            		mysql_real_escape_string($post['address']),
+            		mysql_real_escape_string($post['citystzip']),
+            		mysql_real_escape_string($post['phone']),
+					mysql_real_escape_string($post['fax']),
+					mysql_real_escape_string($post['shoprate']),
+					mysql_real_escape_string($post['margin'])
+            		);
+   $result = mysql_query($updatequery, $link);
+   if (!$result){ return FALSE; }else{ return TRUE;}
+   
+   close_db($link);
 }
 
 function set_contact_info($post)
@@ -103,6 +122,22 @@ function set_update_customer($post)
    close_db($link);
 }
 
+function set_employee_data($post)
+{
+	$link = open_db();
+	
+	$query = sprintf("INSERT INTO employees
+			(group_id, name, email, password)
+			VALUES ('1', '%s','%s','%s')",
+				mysql_real_escape_string($post['employeeName']),
+				mysql_real_escape_string($post['emailAddress']),
+				mysql_real_escape_string($post['password'])
+				);
+	$result = mysql_query($query, $link);
+	
+	close_db($link);
+}
+	
 
 // Update Customer Information
 function set_new_customer($post)
@@ -138,6 +173,9 @@ function set_new_customer($post)
    }
    close_db($link);
 }
+
+
+
 
 function set_add_contact($post)
 {
@@ -228,6 +266,57 @@ function get_company_data()
    
    return $company;
 }
+function get_employee_data()
+{
+	$link = open_db();
+	
+	$result = mysql_query('SELECT * FROM employees', $link);
+	$employees = array();
+	while ($row = mysql_fetch_array($result))
+	{
+	$employees[]=$row;
+	}
+	close_db($link);
+	
+	return $employees;
+}
+function set_employee_detail($post)
+{
+   $link = open_db();
+   $updatequery = sprintf("UPDATE employees 
+   			SET name='%s', email='%s',password='%s'
+			WHERE id=%s",
+            		mysql_real_escape_string($post['employeeName']),
+            		mysql_real_escape_string($post['emailAddress']),
+            		mysql_real_escape_string($post['password']),
+					mysql_real_escape_string($post['id'])
+            		);
+   $result = mysql_query($updatequery, $link);
+   if (!$result){ return FALSE; }else{ return TRUE;}
+   
+   close_db($link);
+
+}
+
+
+function get_employee_details($id)
+{
+   $link = open_db();
+   
+   $id = mysql_real_escape_string($id);
+   $query = 'SELECT * FROM employees WHERE id = '.$id;
+   $result = mysql_query($query);
+   $employees = array();
+   while ($row = mysql_fetch_assoc($result))
+   {
+   	$employees[] = $row;
+   }
+   
+   close_db($link);
+   
+   return $employees;
+}
+
 
 function get_instructions_as_options()
 {
@@ -280,29 +369,9 @@ function get_all_quotes()
 }
 
 
-function get_customer_instructions($id)
-{
-   $link = open_db();
-   
-   $query = sprintf("SELECT * FROM instructions
-   			  WHERE cust_id='%s'",
-			  mysql_real_escape_string($id));
-   $result = mysql_query($query, $link);
-   $instructions = array();
-   while ($row = mysql_fetch_assoc($result))
-   {
-   	$instructions[] = $row;
-   }
-   
-   close_db($link);
-   
-   return $instructions;
-}
-
 function get_all_customers()
 {
    $link = open_db();
-   
    $result = mysql_query('SELECT *
    			  FROM customers', $link);
    $customers = array();
@@ -340,21 +409,6 @@ function get_customer_by_id($id)
    
    $id = mysql_real_escape_string($id);
    $query = 'SELECT c.name FROM quotes AS q LEFT JOIN customers AS c ON q.customer_id=c.id WHERE q.id = '.$id;
-   $result = mysql_query($query);
-   $row = mysql_fetch_row($result);
-   
-   close_db($link);
-   
-   return $row[0];
-}
-
-//returns customer name from customer number
-function get_customer_name($id)
-{
-   $link = open_db();
-   
-   $id = mysql_real_escape_string($id);
-   $query = 'SELECT name FROM customers WHERE id = '.$id;
    $result = mysql_query($query);
    $row = mysql_fetch_row($result);
    
